@@ -15,7 +15,7 @@ LogFusion is designed to streamline log analysis by parsing system, application,
 ## **Project Roadmap**  
 ### **Phase 1: Initial Setup**  
 - [x] Define core objectives and scope  
-- [ ] Establish project structure (`log_analyzer/`)  
+- [x] Establish project structure (`log_analyzer/`)  
 - [ ] Develop a basic log ingestion script (`parser.py`)  
 
 ### **Phase 2: Core Log Analysis**  
