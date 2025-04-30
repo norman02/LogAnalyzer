@@ -1,18 +1,28 @@
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+
 def categorize_log(log_entry):
     """
     Categorizes a log entry based on severity.
-
-    ERROR    → "Critical Issue"
-    WARNING  → "Potential Problem"
-    INFO     → "General Info"
     """
-    level = log_entry.get("level", "").upper()
+    level = log_entry.get("level", "")
+    # Ensure level is a string before calling string methods
 
-    if level == "ERROR":
-        return "Critical Issue"
-    elif level == "WARNING":
-        return "Potential Problem"
-    elif level == "INFO":
-        return "General Info"
-    else:
+    if not isinstance(level, str):
+        logging.warning(f"Unexpected log level type: {type(level)} - {level}")
         return "Unknown Category"
+
+    level = level.strip().upper()
+
+    categories = {
+        "ERROR": "Critical Issue",
+        "WARNING": "Potential Problem",
+        "INFO": "General Info",
+    }
+
+    if level not in categories:
+        logging.warning(f"Unexpected log level value: {level}")
+
+    return categories.get(level, "Unknown Category")  # Simplified lookup
