@@ -1,8 +1,8 @@
-# **LogFusion**  
+# **LogAnalyzer**  
 A lightweight Python-based log analyzer for IT support professionals.
 
 ## **Overview**  
-LogFusion is designed to streamline log analysis by parsing system, application, and network logs, categorizing issues, and providing structured JSON reports. It's built with flexibility in mind, ensuring compatibility across various log formats.
+LogAnalyzer is designed to streamline log analysis by parsing system, application, and network logs, categorizing issues, and providing structured JSON reports. Built for flexibility, it ensures compatibility with various log formats.
 
 ## **Features**  
 ✅ Parses logs using regex and structured rules  
@@ -16,13 +16,13 @@ LogFusion is designed to streamline log analysis by parsing system, application,
 ### **Phase 1: Initial Setup**  
 - [x] Define core objectives and scope  
 - [x] Establish project structure (`log_analyzer/`)  
-- [ ] Develop a basic log ingestion script (`parser.py`)  
+- [x] Develop a basic log ingestion script (`parser.py`)  
 
 ### **Phase 2: Core Log Analysis**  
-- [ ] Implement regex-based log parsing  
-- [ ] Categorize logs into errors, warnings, and info  
-- [ ] Export structured logs in JSON format (`reporter.py`)  
-- [ ] Add unit tests to ensure reliability  
+- [x] Implement regex-based log parsing  
+- [x] Categorize logs into errors, warnings, and info  
+- [x] Export structured logs in JSON format (`reporter.py`)  
+- [x] Add unit tests to ensure reliability  
 
 ### **Phase 3: Advanced Features**  
 - [ ] Introduce severity tagging for critical issues  
@@ -45,8 +45,8 @@ LogFusion is designed to streamline log analysis by parsing system, application,
 ## **Installation & Usage**  
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/YOUR_USERNAME/LogFusion.git
-   cd LogFusion
+   git clone https://github.com/YOUR_USERNAME/LogAnalyzer.git
+   cd LogAnalyzer
    ```
 2. Install dependencies (if any):  
    ```bash
@@ -58,5 +58,5 @@ LogFusion is designed to streamline log analysis by parsing system, application,
    ```
 
 ## **License**  
-This project is licensed under the **MIT License**—open for contributions and modifications.  
+This project is licensed under the **MIT License**—open for contributions and modifications.
 
