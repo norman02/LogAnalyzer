@@ -6,7 +6,11 @@ sys.path.insert(
 )
 
 import unittest
-from src.reporter import generate_summary_report, generate_structured_report
+from src.reporter import (
+    generate_summary_report,
+    generate_structured_report,
+    export_report_csv,
+)
 
 
 class TestReporter(unittest.TestCase):
@@ -72,6 +76,28 @@ class TestReporter(unittest.TestCase):
         }
 
         self.assertEqual(generate_structured_report(log_entries), expected_output)
+
+    def test_export_csv(self):
+        """Test exporting log reports to CSV format."""
+        report = {
+            "summary": {"ERROR": 2, "INFO": 1},
+            "logs": [
+                {
+                    "timestamp": "2025-05-01 10:00:00",
+                    "level": "ERROR",
+                    "message": "Crash detected",
+                },
+                {
+                    "timestamp": "2025-05-01 10:05:00",
+                    "level": "INFO",
+                    "message": "Startup complete",
+                },
+            ],
+        }
+
+        expected_csv = "timestamp,level,message\n2025-05-01 10:00:00,ERROR,Crash detected\n2025-05-01 10:05:00,INFO,Startup complete\n"
+
+        self.assertEqual(export_report_csv(report), expected_csv)
 
 
 if __name__ == "__main__":
