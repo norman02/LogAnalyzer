@@ -1,4 +1,5 @@
 import csv
+import json
 from io import StringIO
 
 
@@ -54,3 +55,13 @@ def export_report_csv(report):
     for log in report["logs"]:
         writer.writerow([log["timestamp"], log["level"], log["message"]])
     return output.getvalue()
+
+
+def export_report_json(report):
+    """
+    Esports a log report in JSON format.
+
+    :param report: Dictionary containing a structured log summary
+    :return: JSON string representation of the logs.
+    """
+    return json.dumps(report, indent=4)

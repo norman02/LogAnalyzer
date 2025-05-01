@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -10,6 +11,7 @@ from src.reporter import (
     generate_summary_report,
     generate_structured_report,
     export_report_csv,
+    export_report_json,
 )
 
 
@@ -98,6 +100,27 @@ class TestReporter(unittest.TestCase):
         expected_csv = "timestamp,level,message\n2025-05-01 10:00:00,ERROR,Crash detected\n2025-05-01 10:05:00,INFO,Startup complete\n"
 
         self.assertEqual(export_report_csv(report), expected_csv)
+
+    def test_export_json(self):
+        """Test exporting log reports to JSON format."""
+        report = {
+            "summary": {"ERROR": 2, "INFOR": 1},
+            "logs": [
+                {
+                    "timestamp": "2025-05-01 10:00:00",
+                    "level": "ERROR",
+                    "message": "Crash detected",
+                },
+                {
+                    "timestamp": "2025-05-01 10:05:00",
+                    "level": "INFO",
+                    "message": "Startup complete",
+                },
+            ],
+        }
+
+        expected_json = json.dumps(report, indent=4)
+        self.assertEqual(export_report_json(report), expected_json)
 
 
 if __name__ == "__main__":
