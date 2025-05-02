@@ -1,14 +1,18 @@
 import os
 import sys
+import subprocess
+import unittest
+import logging
 
+logging.disable(logging.CRITICAL)  # Suppresses all logs below CRITICAL
+# Ensure the project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.analyzer import LogCategorizer
-import unittest
+from src.analyzer import LogCategorizer  # Import your categorizer
 
 
 class TestAnalyzer(unittest.TestCase):
-    """Tests for log categorization."""
+    """Tests for log categorization and main module execution."""
 
     def setUp(self):
         """Initialize LogCategorizer before each test."""
@@ -43,8 +47,8 @@ class TestAnalyzer(unittest.TestCase):
         """Test handling of invalid log entries."""
         test_cases = [
             (None, "Unknown Category"),  # Completely invalid entry
-            ([], "Unknown Category"),  # Invalid type
-            ("ERROR", "Unknown Category"),  # Invalid type
+            ([], "Unknown Category"),  # Invalid type: list
+            ("ERROR", "Unknown Category"),  # Invalid type: string
             ({"message": "No level here"}, "Unknown Category"),  # Missing "level" key
             ({"level": "   "}, "Unknown Category"),  # Whitespace-only level
             ({"level": None}, "Unknown Category"),  # Null level
