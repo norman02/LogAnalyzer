@@ -4,6 +4,25 @@ from src.core import LogAnalyzerCore
 from src.parser import parse_log_entry  # ✅ Import parser
 
 
+def get_logs_from_file(file_path="logs.txt"):
+    """Retrieve log entries from a file or fallback to default logs.
+
+    :param file_path: Path to log file.
+    :return: List of log lines
+    """
+    if os.path.exists(file_path):
+        with open(file_path, "r") as file:
+            return file.readlines()
+
+        # Default logs for testing/demo purposes
+
+    return [
+        "2025-05-01 10:00:00 ERROR Crash detected",
+        "2025-05-01 10:05:00 INFO Startup complete",
+        "2025-05-01 10:10:00 WARNING High memory usage",
+    ]
+
+
 def main():
     try:
         # ✅ Ensure consistent working directory resolution
