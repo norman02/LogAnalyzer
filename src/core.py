@@ -5,23 +5,34 @@ from src.exporters import CSVExporter, JSONExporter
 
 
 class LogAnalyzerCore:
-    """Central controller for parsing, analyzing, and reporting logs."""
+    """Central controller for parsing, analyzing, and reporting logs.
 
-    def __init__(self, raw_log_lines, parser):
-        """
-        Initialize the LogAnalyzerCore.
+    This class follows SOLID principles, ensuring separation of concerns
+    and easy dependency injection.
+    """
 
-        :param raw_log_lines: List of raw log entries as strings
+    def __init__(self, raw_log_lines, parser, analyzer=None):
+        """Initialize LogAnalyzerCore with dependency injection.
+
+        :param raw_log_lines: List of raw log entries (string format).
         :param parser: Function to parse individual log lines into structured data.
+        :param analyzer: Custom log categorizer (defaults to LogCategorizer).
         """
-        # Parse each log line using the injected parser function
+        # Parse logs using the provided parser function
+        self.raw_logs = self.parse_logs(raw_log_lines, parser)
 
-        # Ignore lines that return None (invalid or empty entries)
+        # Use the provided analyzer or default to LogCategorizer
+        self.analyzer = analyzer or LogCategorizer()
 
-        self.raw_logs = [parser(line) for line in raw_log_lines if parser(line)]
+    def parse_logs(self, raw_log_lines, parser):
+        """Parse log entries using the provided parser function.
 
-        # Initialize the log categorizer (handles severity classification)
-        self.analyzer = LogCategorizer()
+        :param raw_log_lines: List of raw log entries (string format).
+        :param parser: Function to parse individual log lines into structured data.
+        :return: List of parsed log dictionaries.
+        """
+        # Filter out None values to ensure only valid logs are processed
+        return [parser(line) for line in raw_log_lines if parser(line)]
 
     def analyze_logs(self):
         """Categorize parsed logs based on severity.
@@ -33,7 +44,16 @@ class LogAnalyzerCore:
         ]
 
     def export_report(self, format_type="csv"):
-        """Export structured report in CSV or JSON format."""
+        """Export structured report in CSV or JSON format.
+
+        :param format_type: Export format ('csv' or 'json').
+        :return: Formatted report as a string.
+        """
         structured_report = generate_structured_report(self.raw_logs)
-        exporter = CSVExporter() if format_type == "csv" else JSONExporter()
+
+        # Select the appropriate exporter based on format type
+        exporters = {"csv": CSVExporter, "json": JSONExporter}
+        exporter_class = exporters.get(format_type, CSVExporter)  # Default to CSV
+        exporter = exporter_class()
+
         return export_report(structured_report, exporter)

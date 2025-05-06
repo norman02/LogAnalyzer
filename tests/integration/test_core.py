@@ -38,7 +38,8 @@ class TestLogAnalyzerCore(unittest.TestCase):
 
     def test_log_parsing(self):
         """Verify logs are correctly parsed."""
-        self.assertTrue(len(self.analyzer.raw_logs) > 0, "No logs were parsed!")
+        parsed_logs = self.analyzer.parse_logs(self.sample_logs, parse_log_entry)
+        self.assertTrue(len(parsed_logs) > 0, "No logs were parsed!")
 
     def test_log_analysis(self):
         """Test log categorization works."""
