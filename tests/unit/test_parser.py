@@ -59,6 +59,26 @@ class TestParser(unittest.TestCase):
             invalid_warning, "WARNING should not be accepted with custom levels."
         )
 
+    def test_alternative_log_formats(self):
+        """Ensure parser supports multiple log formats."""
+        formats = [
+            "2025-05-01 12:30:00 ERROR System crash detected",
+            "[2025/05/01 12:35:00] INFO: Initialization complete",
+            "05/05/2025 12:40:00 - WARNING - High memory usage",
+        ]
+        results = [parse_log_entry(log) for log in formats]
+        self.assertEqual(
+            results[0]["level"], "ERROR", "Standard format should parse correctly."
+        )
+        self.assertEqual(
+            results[1]["level"], "INFO", "Bracket format should parse correctly."
+        )
+        self.assertEqual(
+            results[2]["level"],
+            "WARNING",
+            "Dash-seperated format should parse correctly.",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
