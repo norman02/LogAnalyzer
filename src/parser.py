@@ -19,15 +19,17 @@ def parse_log_entry(
 
     log_entry = log_entry.strip()  # ✅ Normalize input
 
-    match = re.fullmatch(
-        r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+)$", log_entry
-    )
-    if not match:
-        return None
+    patterns = [
+        r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+)$",  # ✅ Standard format
+        r"^\[(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})\] (\w+): (.+)$",  # ✅ Bracket format
+        r"^(\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}) - (\w+) - (.+)$",  # ✅ Dash-separated format
+    ]
 
-    timestamp, level, message = match.groups()
+    for pattern in patterns:
+        match = re.fullmatch(pattern, log_entry)  # ✅ Iterate through patterns
+        if match:
+            timestamp, level, message = match.groups()
+            if level in allowed_levels:
+                return {"timestamp": timestamp, "level": level, "message": message}
 
-    if level not in allowed_levels:
-        return None
-
-    return {"timestamp": timestamp, "level": level, "message": message}
+    return None  # ✅ If no format matches, return None
