@@ -9,8 +9,12 @@ def parse_log_entry(log_entry: str) -> Optional[Dict[str, str]]:
     :param log_entry: Log entry string.
     :return: Dictionary with parsed log fields, or None if the format is invalid or if the level is not allowed.
     """
+    if not isinstance(log_entry, str) or not log_entry.strip():
+        return None  # Handle None and empty strings gracefully
+
     # Define the allowed log levels
     allowed_levels = {"ERROR", "WARNING", "INFO"}
+    log_entry = log_entry.strip()  # Normalize input
 
     # The regex expects: timestamp, level, then message—each separated by a single space.
     match = re.match(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+)$", log_entry)
