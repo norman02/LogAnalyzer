@@ -39,6 +39,26 @@ class TestParser(unittest.TestCase):
             parse_log_entry("  "), "Whitespace-only log should return None"
         )
 
+    def test_custom_allowed_levels(self):
+        """Ensure parser respects custom allowed log levels."""
+        custom_levels = {"DEBUG", "CRITICAL"}  # Define custom log levels
+
+        valid_debug = parse_log_entry(
+            "2025-05-01 12:30:00 DEBUG Debugging details", allowed_levels=custom_levels
+        )
+        valid_critical = parse_log_entry(
+            "2025-05-01 12:40:00 CRITICAL System failure", allowed_levels=custom_levels
+        )
+        invalid_warning = parse_log_entry(
+            "2025-05-01 12:50:00 WARNING Potential issue", allowed_levels=custom_levels
+        )
+
+        self.assertIsNotNone(valid_debug, "DEBUG should be accepted.")
+        self.assertIsNotNone(valid_critical, "CRITICAL should be accepted.")
+        self.assertIsNone(
+            invalid_warning, "WARNING should not be accepted with custom levels."
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
