@@ -31,6 +31,14 @@ class TestParser(unittest.TestCase):
 
         self.assertEqual(parse_log_entry(log_entry), expected)
 
+    def test_empty_log_entry(self):
+        """Ensure an empty log entry returns None."""
+        self.assertIsNone(parse_log_entry(""), "Empty log should return None")
+        self.assertIsNone(parse_log_entry(None), "None input should return None")
+        self.assertIsNone(
+            parse_log_entry("  "), "Whitespace-only log should return None"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
