@@ -1,11 +1,12 @@
 import unittest
 import os
 import logging
+import time
 from src.main import get_logs_from_file, main
 
 
 class TestMainExecution(unittest.TestCase):
-    """Tests for the main execution logic in main.py (without error logging test)."""
+    """Tests for the main execution logic in main.py."""
 
     def setUp(self):
         """Create a temporary log file for testing purposes."""
@@ -29,6 +30,20 @@ class TestMainExecution(unittest.TestCase):
         """Ensure main.py executes successfully with a valid log file."""
         result = main(log_file=self.test_log_file, export_format="csv")
         self.assertEqual(result, 0, "main.py did not execute successfully.")
+
+    def test_file_not_found_error(self):
+        """Ensure FileNotFoundError is handled properly."""
+        exit_code = main(log_file="missing_logs.txt")
+        time.sleep(0.1)  # Allow time for logs to be flushed/written.
+        self.assertEqual(exit_code, 1, "Main should return 1 on failure.")
+        self.assertTrue(
+            os.path.exists("error.log"), "Error log file should be created."
+        )
+
+    def test_successful_execution(self):
+        """Ensure main.py runs successfully with a valid log file."""
+        result = main(log_file=self.test_log_file, export_format="csv")
+        self.assertEqual(result, 0, "Main should return 0 on successful execution.")
 
 
 if __name__ == "__main__":
